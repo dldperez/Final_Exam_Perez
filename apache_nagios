@@ -1,0 +1,15 @@
+---
+- hosts: Centos
+  become: true
+  tasks:
+
+  - name: Install apache for centos (package module)
+    package:
+      name: "{{apache_package}}"
+
+  - name: Start and enable httpd
+    service:
+      name: httpd
+      state: started
+      enabled: yes
+   

@@ -1,0 +1,13 @@
+---
+- name: Set motd on remote server
+  hosts: all
+  tasks:
+    - name: "copy motd file to /etc/motd"
+      template:
+        src: motd.j2
+        dest: /etc/motd
+        owner: root
+        group: root
+        mode: '644'
+
+

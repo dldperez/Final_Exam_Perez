@@ -1,15 +1,15 @@
 ---
-- name: Install Apache on Centos
+- name: Install Apache on CentOS
   hosts: Centos
   become: yes
+
   tasks:
+#    - name: Ensure Apache is installed
+ #     dnf:
+  #      name: httpd
+   #     state: present
 
-    - name: Install Apache on CentOS
-      yum:
-        name: httpd
-        state: present
-
-    - name: Start Apache service on CentOS
+    - name: Ensure Apache is started and enabled
       service:
         name: httpd
         state: started
