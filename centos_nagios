@@ -1,0 +1,36 @@
+
+---
+- name: Install Nagios on Centos
+  hosts: Centos
+  become: yes
+  tasks:
+
+    - name: Install Nagios dependencies on CentOS
+      dnf:
+        name:
+          - gcc
+          - glibc
+          - glibc-common
+          - make
+          - php
+          - httpd
+          - gd
+        state: present
+
+    - name: Download and install Nagios from source
+      shell: |
+        cd /tmp
+        wget -O nagioscore.tar.gz https://github.com/NagiosEnterprises/nagioscore/archive/nagios-4.4.14.tar.gz
+        tar xzf nagioscore.tar.gz
+        cd /tmp/nagioscore-nagios-4.4.14/
+        ./configure
+        make all
+        
+       
+    - name: Configure Nagios
+      command: htpasswd -b -c /usr/local/nagios/etc/htpasswd.users nagiosadmin nagiosadmin
+
+    - name: Restart Apache service on CentOS after Nagios installation
+      service:
+        name: httpd
+        state: restarted

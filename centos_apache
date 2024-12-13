@@ -1,0 +1,16 @@
+---
+- name: Install Apache on Centos
+  hosts: Centos
+  become: yes
+  tasks:
+
+    - name: Install Apache on CentOS
+      yum:
+        name: httpd
+        state: present
+
+    - name: Start Apache service on CentOS
+      service:
+        name: httpd
+        state: started
+        enabled: yes

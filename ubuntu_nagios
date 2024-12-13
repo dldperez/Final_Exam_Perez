@@ -1,0 +1,38 @@
+---
+- name: Install Nagios on Ubuntu
+  hosts: Ubuntu
+  become: yes
+  
+  tasks:
+   
+    - name: Install nagios dependencies on Ubuntu
+      apt:
+        name:
+         - build-essential
+         - libgd-dev
+         - apache2-utils
+         - libapache2-mod-php
+         - php
+         - php-gd
+        state: present
+        update_cache: yes
+
+    - name: Download and install Nagios from source
+      shell: |
+        cd /tmp
+        wget https://assets.nagios.com/downloads/nagioscore/releases/nagios-4.4.7.tar.gz       
+        tar -xvzf nagios-4.4.7.tar.gz
+        cd nagios-4.4.7
+        ./configure --with-httpd-conf=/etc/apache2/sites-enabled
+        
+   
+
+    - name: Configure Nagios
+      command: htpasswd -b -c /usr/local/nagios/etc/htpasswd.users nagiosadmin nag$
+
+    - name: Restart Apache service on Ubuntu after Nagios Installation
+      service:
+       name: apache2
+       state: restarted
+
+
